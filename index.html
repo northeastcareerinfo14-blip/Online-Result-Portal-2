@@ -32,10 +32,9 @@
         <button id="navStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-slate-950 shadow hover:bg-amber-400 transition">
           <i class="fa-solid fa-user-graduate mr-1"></i> Student Search
         </button>
-        <button id="navAdminBtn" onclick="openAdminLogin()" 
-class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition">
-<i class="fa-solid fa-user-shield mr-1"></i> Admin Portal
-</button>
+        <button id="navAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition">
+          <i class="fa-solid fa-user-shield mr-1"></i> Admin Portal
+        </button>
       </div>
     </div>
   </header>
@@ -146,46 +145,80 @@ class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 ho
 
     <!-- ADMIN PORTAL VIEW -->
     <section id="adminView" class="hidden space-y-6">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-        <div>
-          <h2 class="text-xl font-bold text-slate-800">Admin Result Management Portal</h2>
-          <p class="text-xs text-slate-500">Add, edit, filter, or bulk upload student results.</p>
+      
+      <!-- ADMIN LOGIN FORM (Shown if not logged in) -->
+      <div id="adminLoginCard" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
+        <div class="text-center mb-6">
+          <div class="w-12 h-12 bg-slate-900 text-amber-400 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl shadow">
+            <i class="fa-solid fa-lock"></i>
+          </div>
+          <h2 class="text-xl font-bold text-slate-800">Admin Authentication</h2>
+          <p class="text-xs text-slate-500 mt-1">Please enter your credentials to access the management portal.</p>
         </div>
-        <div class="flex flex-wrap gap-2">
-          <button onclick="openModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2">
-            <i class="fa-solid fa-plus"></i> Single Entry
+
+        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">User ID</label>
+            <input type="text" id="adminUser" required placeholder="Enter User ID" class="w-full px-3 py-3 border border-slate-300 rounded-xl text-sm outline-none focus:border-amber-500">
+          </div>
+          <div>
+            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
+            <input type="password" id="adminPass" required placeholder="Enter Password" class="w-full px-3 py-3 border border-slate-300 rounded-xl text-sm outline-none focus:border-amber-500">
+          </div>
+          <p id="loginError" class="text-xs text-red-500 font-semibold hidden text-center">Invalid User ID or Password.</p>
+          <button type="submit" class="w-full bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-slate-800 transition shadow">
+            Login to Admin Portal
           </button>
-          <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2 cursor-pointer">
-            <i class="fa-solid fa-file-csv"></i> Bulk CSV Import
-            <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleBulkCSV(event)">
-          </label>
+        </form>
+      </div>
+
+      <!-- ADMIN DASHBOARD (Shown after successful login) -->
+      <div id="adminDashboard" class="hidden space-y-6">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+          <div>
+            <h2 class="text-xl font-bold text-slate-800">Admin Result Management Portal</h2>
+            <p class="text-xs text-slate-500">Add, edit, filter, or bulk upload student results.</p>
+          </div>
+          <div class="flex flex-wrap gap-2 items-center">
+            <button onclick="openModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2">
+              <i class="fa-solid fa-plus"></i> Single Entry
+            </button>
+            <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2 cursor-pointer">
+              <i class="fa-solid fa-file-csv"></i> Bulk CSV Import
+              <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleBulkCSV(event)">
+            </label>
+            <button onclick="adminLogout()" class="px-3 py-2 bg-red-100 text-red-600 hover:bg-red-200 text-sm font-semibold rounded-lg transition" title="Logout">
+              <i class="fa-solid fa-right-from-bracket"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+          <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between gap-4">
+            <input type="text" id="adminSearch" onkeyup="filterAdminTable()" placeholder="Search student name or roll..." class="px-3 py-2 border border-slate-300 rounded-lg text-sm w-full sm:w-64 outline-none focus:border-amber-500">
+            <button onclick="resetData()" class="text-xs text-red-500 hover:underline">Reset to Default Data</button>
+          </div>
+          <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm">
+              <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b border-slate-200">
+                <tr>
+                  <th class="py-3 px-4 font-semibold">Roll No</th>
+                  <th class="py-3 px-4 font-semibold">Student Name</th>
+                  <th class="py-3 px-4 font-semibold text-center">MCQ (45)</th>
+                  <th class="py-3 px-4 font-semibold text-center">THY (45)</th>
+                  <th class="py-3 px-4 font-semibold text-center">IA (10)</th>
+                  <th class="py-3 px-4 font-semibold text-center">Total (100)</th>
+                  <th class="py-3 px-4 font-semibold text-center">Result</th>
+                  <th class="py-3 px-4 font-semibold text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="adminTableBody" class="divide-y divide-slate-100">
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 
-      <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-        <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between gap-4">
-          <input type="text" id="adminSearch" onkeyup="filterAdminTable()" placeholder="Search student name or roll..." class="px-3 py-2 border border-slate-300 rounded-lg text-sm w-full sm:w-64 outline-none focus:border-amber-500">
-          <button onclick="resetData()" class="text-xs text-red-500 hover:underline">Reset to Default Data</button>
-        </div>
-        <div class="overflow-x-auto">
-          <table class="w-full text-left text-sm">
-            <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b border-slate-200">
-              <tr>
-                <th class="py-3 px-4 font-semibold">Roll No</th>
-                <th class="py-3 px-4 font-semibold">Student Name</th>
-                <th class="py-3 px-4 font-semibold text-center">MCQ (45)</th>
-                <th class="py-3 px-4 font-semibold text-center">THY (45)</th>
-                <th class="py-3 px-4 font-semibold text-center">IA (10)</th>
-                <th class="py-3 px-4 font-semibold text-center">Total (100)</th>
-                <th class="py-3 px-4 font-semibold text-center">Result</th>
-                <th class="py-3 px-4 font-semibold text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody id="adminTableBody" class="divide-y divide-slate-100">
-            </tbody>
-          </table>
-        </div>
-      </div>
     </section>
 
   </main>
@@ -262,6 +295,7 @@ class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 ho
       return { ...s, total, mcqPass, thyPass, iaPass, aggregatePass, overallPass };
     }
 
+    // Navigation & Auth Switcher
     function switchTab(tab) {
       const studentView = document.getElementById("studentView");
       const adminView = document.getElementById("adminView");
@@ -278,8 +312,46 @@ class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 ho
         adminView.classList.remove("hidden");
         navAdminBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-slate-950 shadow hover:bg-amber-400 transition";
         navStudentBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition";
-        renderAdminTable();
+        
+        checkAdminAuth();
       }
+    }
+
+    function checkAdminAuth() {
+      const isLogged = sessionStorage.getItem("adminLoggedIn") === "true";
+      const loginCard = document.getElementById("adminLoginCard");
+      const dashboard = document.getElementById("adminDashboard");
+
+      if (isLogged) {
+        loginCard.classList.add("hidden");
+        dashboard.classList.remove("hidden");
+        renderAdminTable();
+      } else {
+        loginCard.classList.remove("hidden");
+        dashboard.classList.add("hidden");
+      }
+    }
+
+    function handleAdminLogin(e) {
+      e.preventDefault();
+      const user = document.getElementById("adminUser").value.trim();
+      const pass = document.getElementById("adminPass").value.trim();
+      const errorMsg = document.getElementById("loginError");
+
+      if (user === "admin" && pass === "dara123@") {
+        sessionStorage.setItem("adminLoggedIn", "true");
+        errorMsg.classList.add("hidden");
+        document.getElementById("adminUser").value = "";
+        document.getElementById("adminPass").value = "";
+        checkAdminAuth();
+      } else {
+        errorMsg.classList.remove("hidden");
+      }
+    }
+
+    function adminLogout() {
+      sessionStorage.removeItem("adminLoggedIn");
+      checkAdminAuth();
     }
 
     function handleSearch(e) {
@@ -321,6 +393,35 @@ class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 ho
       }
 
       resultCard.classList.remove("hidden");
+    }
+
+    function renderAdminTable(dataToRender = students) {
+      const tbody = document.getElementById("adminTableBody");
+      tbody.innerHTML = "";
+
+      dataToRender.forEach(raw => {
+        const res = evaluateStudent(raw);
+        const tr = document.createElement("tr");
+        tr.className = "hover:bg-slate-50 transition";
+        tr.innerHTML = `
+          <td class="py-3 px-4 font-mono font-semibold">${res.roll}</td>
+          <td class="py-3 px-4 font-medium">${res.name}</td>
+          <td class="py-3 px-4 text-center">${res.mcq}</td>
+          <td class="py-3 px-4 text-center">${res.thy}</td>
+          <td class="py-3 px-4 text-center">${res.ia}</td>
+          <td class="py-3 px-4 text-center font-bold text-indigo-700">${res.total}</td>
+          <td class="py-3 px-4 text-center">
+            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full ${res.overallPass ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
+              ${res.overallPass ? 'PASS' : 'FAIL'}
+            </span>
+          </td>
+          <td class="py-3 px-4 text-right space-x-2">
+            <button onclick="editStudent('${res.roll}')" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
+            <button onclick="deleteStudent('${res.roll}')" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> Delete</button>
+          </td>
+        `;
+        tbody.appendChild(tr);
+      });
     }
 
     function filterAdminTable() {
@@ -371,14 +472,14 @@ class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 ho
       const thy = parseInt(document.getElementById("modalTHY").value) || 0;
       const ia = parseInt(document.getElementById("modalIA").value) || 0;
 
+      const existingIdx = students.findIndex(s => s.roll.toLowerCase() === roll.toLowerCase());
+
       if (editingRoll) {
         const idx = students.findIndex(s => s.roll === editingRoll);
         if (idx !== -1) students[idx] = { roll, name, mcq, thy, ia };
+      } else if (existingIdx !== -1) {
+        students[existingIdx] = { roll, name, mcq, thy, ia };
       } else {
-        if (students.some(s => s.roll === roll)) {
-          alert("A student with this Roll Number already exists!");
-          return;
-        }
         students.push({ roll, name, mcq, thy, ia });
       }
 
