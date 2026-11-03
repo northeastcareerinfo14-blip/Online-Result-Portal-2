@@ -1,544 +1,1280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Half Yearly Examination 2026-27 - Social Science Class X</title>
-  <!-- Tailwind CSS CDN -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  <!-- FontAwesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  <style>
-    @media print {
-      .no-print { display: none !important; }
-      .print-only { display: block !important; }
-      body { background: white; color: black; }
-    }
-  </style>
-</head>
-<body class="bg-slate-100 font-sans min-h-screen text-slate-800 flex flex-col">
-
-  <!-- Header -->
-  <header class="bg-slate-900 text-white shadow-md no-print">
-    <div class="max-w-6xl mx-auto px-4 py-4 flex flex-col sm:flex-row justify-between items-center gap-4">
-      <div class="flex items-center gap-3">
-        <i class="fa-solid font-bold text-2xl text-amber-400 fa-graduation-cap"></i>
-        <div>
-          <h1 class="text-xl font-bold leading-tight">Half Yearly Examination 2026-27</h1>
-          <p class="text-xs text-slate-400">Class: X | Subject: Social Science</p>
-        </div>
-      </div>
-      <div class="flex gap-2">
-        <button id="navStudentBtn" onclick="switchTab('student')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-slate-950 shadow hover:bg-amber-400 transition">
-          <i class="fa-solid fa-user-graduate mr-1"></i> Student Search
-        </button>
-        <button id="navAdminBtn" onclick="switchTab('admin')" class="px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition">
-          <i class="fa-solid fa-user-shield mr-1"></i> Admin Portal
-        </button>
-      </div>
-    </div>
-  </header>
-
-  <!-- Main Content Container -->
-  <main class="max-w-6xl mx-auto px-4 py-8 flex-grow w-full">
-
-    <!-- STUDENT SEARCH VIEW -->
-    <section id="studentView" class="space-y-6">
-      <div class="max-w-xl mx-auto bg-white p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 no-print">
-        <h2 class="text-xl font-bold text-slate-800 text-center mb-2">Check Your Examination Result</h2>
-        <p class="text-xs text-slate-500 text-center mb-6">Enter your Roll Number below to retrieve your detailed marksheet.</p>
-        
-        <form onsubmit="handleSearch(event)" class="space-y-4">
-          <div>
-            <label for="searchRoll" class="block text-xs font-semibold uppercase text-slate-600 mb-1">Roll Number</label>
-            <div class="relative">
-              <input type="text" id="searchRoll" required placeholder="e.g. 1001" class="w-full pl-10 pr-4 py-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-amber-500 focus:border-amber-500 outline-none text-slate-800 font-medium transition">
-              <i class="fa-solid fa-id-card absolute left-3.5 top-3.5 text-slate-400"></i>
-            </div>
-          </div>
-          <button type="submit" class="w-full bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-slate-800 transition shadow flex justify-center items-center gap-2">
-            <i class="fa-solid fa-magnifying-glass"></i> View Result
-          </button>
-        </form>
-      </div>
-
-      <!-- Result Card -->
-      <div id="resultCard" class="hidden max-w-2xl mx-auto bg-white rounded-2xl shadow-md border border-slate-200 overflow-hidden">
-        <div class="bg-slate-900 text-white p-6 border-b border-slate-800 flex justify-between items-start">
-          <div>
-            <span class="text-xs font-semibold px-2.5 py-1 bg-amber-500/20 text-amber-400 rounded-full inline-block mb-2">Half Yearly Exam 2026-27</span>
-            <h3 id="resName" class="text-2xl font-bold uppercase tracking-wide">Candidate Name</h3>
-            <p id="resRoll" class="text-sm text-slate-400 font-mono mt-1">Roll No: --</p>
-          </div>
-          <div class="text-right">
-            <span id="resStatusBadge" class="px-3 py-1 text-xs font-extrabold uppercase rounded-full bg-emerald-500 text-white shadow-sm">PASS</span>
-          </div>
-        </div>
-
-        <div class="p-6 space-y-6">
-          <div class="grid grid-cols-2 gap-4 bg-slate-50 p-4 rounded-xl text-sm border border-slate-100">
-            <div>
-              <span class="text-slate-500 text-xs block">Class & Section</span>
-              <span class="font-semibold text-slate-800">Class X (Social Science)</span>
-            </div>
-            <div>
-              <span class="text-slate-500 text-xs block">Academic Year</span>
-              <span class="font-semibold text-slate-800">2026 - 2027</span>
-            </div>
-          </div>
-
-          <div>
-            <h4 class="text-xs font-semibold uppercase text-slate-500 mb-3 tracking-wider">Score Breakdown</h4>
-            <div class="overflow-x-auto">
-              <table class="w-full text-left text-sm border-collapse">
-                <thead>
-                  <tr class="border-b border-slate-200 text-slate-500 text-xs">
-                    <th class="py-2 font-semibold">Assessment</th>
-                    <th class="py-2 text-center font-semibold">Max Marks</th>
-                    <th class="py-2 text-center font-semibold">Marks Obtained</th>
-                    <th class="py-2 text-right font-semibold">Status</th>
-                  </tr>
-                </thead>
-                <tbody class="divide-y divide-slate-100 text-slate-700">
-                  <tr>
-                    <td class="py-3 font-medium">Multiple Choice Questions (MCQ)</td>
-                    <td class="py-3 text-center">45</td>
-                    <td id="resMCQ" class="py-3 text-center font-bold">--</td>
-                    <td id="resMCQStatus" class="py-3 text-right text-xs font-semibold">--</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 font-medium">Theory Examination (THY)</td>
-                    <td class="py-3 text-center">45</td>
-                    <td id="resTHY" class="py-3 text-center font-bold">--</td>
-                    <td id="resTHYStatus" class="py-3 text-right text-xs font-semibold">--</td>
-                  </tr>
-                  <tr>
-                    <td class="py-3 font-medium">Internal Assessment (IA)</td>
-                    <td class="py-3 text-center">10</td>
-                    <td id="resIA" class="py-3 text-center font-bold">--</td>
-                    <td id="resIAStatus" class="py-3 text-right text-xs font-semibold">--</td>
-                  </tr>
-                  <tr class="bg-slate-50 font-bold text-slate-900">
-                    <td class="py-3 px-2">Grand Total</td>
-                    <td class="py-3 text-center">100</td>
-                    <td id="resTotal" class="py-3 text-center text-lg text-indigo-700">--</td>
-                    <td id="resOverallStatus" class="py-3 text-right text-sm">--</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-
-          <div class="text-xs text-slate-500 bg-amber-50 p-3 rounded-lg border border-amber-200/60">
-            <i class="fa-solid fa-triangle-exclamation text-amber-600 mr-1"></i>
-            <strong>Passing Criteria:</strong> Candidate must secure non-zero marks in MCQ, THY, and IA individually, and achieve a minimum aggregate total of 30 marks.
-          </div>
-
-          <div class="text-right no-print">
-            <button onclick="window.print()" class="px-4 py-2 text-sm bg-slate-100 hover:bg-slate-200 text-slate-700 font-semibold rounded-lg transition inline-flex items-center gap-2">
-              <i class="fa-solid fa-print"></i> Print Marksheet
-            </button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ADMIN PORTAL VIEW -->
-    <section id="adminView" class="hidden space-y-6">
-      
-      <!-- ADMIN LOGIN FORM (Shown if not logged in) -->
-      <div id="adminLoginCard" class="max-w-md mx-auto bg-white p-8 rounded-2xl shadow-sm border border-slate-200">
-        <div class="text-center mb-6">
-          <div class="w-12 h-12 bg-slate-900 text-amber-400 rounded-xl flex items-center justify-center mx-auto mb-3 text-xl shadow">
-            <i class="fa-solid fa-lock"></i>
-          </div>
-          <h2 class="text-xl font-bold text-slate-800">Admin Authentication</h2>
-          <p class="text-xs text-slate-500 mt-1">Please enter your credentials to access the management portal.</p>
-        </div>
-
-        <form onsubmit="handleAdminLogin(event)" class="space-y-4">
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">User ID</label>
-            <input type="text" id="adminUser" required placeholder="Enter User ID" class="w-full px-3 py-3 border border-slate-300 rounded-xl text-sm outline-none focus:border-amber-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold uppercase text-slate-600 mb-1">Password</label>
-            <input type="password" id="adminPass" required placeholder="Enter Password" class="w-full px-3 py-3 border border-slate-300 rounded-xl text-sm outline-none focus:border-amber-500">
-          </div>
-          <p id="loginError" class="text-xs text-red-500 font-semibold hidden text-center">Invalid User ID or Password.</p>
-          <button type="submit" class="w-full bg-slate-900 text-white font-semibold py-3 rounded-xl hover:bg-slate-800 transition shadow">
-            Login to Admin Portal
-          </button>
-        </form>
-      </div>
-
-      <!-- ADMIN DASHBOARD (Shown after successful login) -->
-      <div id="adminDashboard" class="hidden space-y-6">
-        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
-          <div>
-            <h2 class="text-xl font-bold text-slate-800">Admin Result Management Portal</h2>
-            <p class="text-xs text-slate-500">Add, edit, filter, or bulk upload student results.</p>
-          </div>
-          <div class="flex flex-wrap gap-2 items-center">
-            <button onclick="openModal()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2">
-              <i class="fa-solid fa-plus"></i> Single Entry
-            </button>
-            <label class="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-white text-sm font-semibold rounded-lg transition flex items-center gap-2 cursor-pointer">
-              <i class="fa-solid fa-file-csv"></i> Bulk CSV Import
-              <input type="file" id="csvFileInput" accept=".csv" class="hidden" onchange="handleBulkCSV(event)">
-            </label>
-            <button onclick="adminLogout()" class="px-3 py-2 bg-red-100 text-red-600 hover:bg-red-200 text-sm font-semibold rounded-lg transition" title="Logout">
-              <i class="fa-solid fa-right-from-bracket"></i>
-            </button>
-          </div>
-        </div>
-
-        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
-          <div class="p-4 border-b border-slate-200 flex flex-col sm:flex-row justify-between gap-4">
-            <input type="text" id="adminSearch" onkeyup="filterAdminTable()" placeholder="Search student name or roll..." class="px-3 py-2 border border-slate-300 rounded-lg text-sm w-full sm:w-64 outline-none focus:border-amber-500">
-            <button onclick="resetData()" class="text-xs text-red-500 hover:underline">Reset to Default Data</button>
-          </div>
-          <div class="overflow-x-auto">
-            <table class="w-full text-left text-sm">
-              <thead class="bg-slate-50 text-slate-500 text-xs uppercase border-b border-slate-200">
-                <tr>
-                  <th class="py-3 px-4 font-semibold">Roll No</th>
-                  <th class="py-3 px-4 font-semibold">Student Name</th>
-                  <th class="py-3 px-4 font-semibold text-center">MCQ (45)</th>
-                  <th class="py-3 px-4 font-semibold text-center">THY (45)</th>
-                  <th class="py-3 px-4 font-semibold text-center">IA (10)</th>
-                  <th class="py-3 px-4 font-semibold text-center">Total (100)</th>
-                  <th class="py-3 px-4 font-semibold text-center">Result</th>
-                  <th class="py-3 px-4 font-semibold text-right">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="adminTableBody" class="divide-y divide-slate-100">
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-
-    </section>
-
-  </main>
-
-  <!-- MODAL FOR SINGLE ENTRY / EDIT -->
-  <div id="entryModal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm hidden items-center justify-center p-4 z-50">
-    <div class="bg-white w-full max-w-md rounded-2xl shadow-xl overflow-hidden">
-      <div class="bg-slate-900 text-white p-4 flex justify-between items-center">
-        <h3 id="modalTitle" class="font-bold text-lg">Add Student Result</h3>
-        <button onclick="closeModal()" class="text-slate-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
-      </div>
-      <form onsubmit="saveStudent(event)" class="p-6 space-y-4">
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Roll Number</label>
-          <input type="text" id="modalRoll" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-amber-500">
-        </div>
-        <div>
-          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Candidate Name</label>
-          <input type="text" id="modalName" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-amber-500">
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">MCQ (Max 45)</label>
-            <input type="number" id="modalMCQ" min="0" max="45" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-amber-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">THY (Max 45)</label>
-            <input type="number" id="modalTHY" min="0" max="45" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-amber-500">
-          </div>
-          <div>
-            <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">IA (Max 10)</label>
-            <input type="number" id="modalIA" min="0" max="10" required class="w-full px-3 py-2 border border-slate-300 rounded-lg text-sm outline-none focus:border-amber-500">
-          </div>
-        </div>
-        <div class="pt-4 flex justify-end gap-2">
-          <button type="button" onclick="closeModal()" class="px-4 py-2 text-sm text-slate-600 hover:bg-slate-100 rounded-lg">Cancel</button>
-          <button type="submit" class="px-4 py-2 text-sm bg-amber-500 text-slate-950 font-semibold rounded-lg hover:bg-amber-400">Save Record</button>
-        </div>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    const initialData = [
-      { roll: "1001", name: "Ankur Das", mcq: 40, thy: 38, ia: 9 },
-      { roll: "1002", name: "Bishal Sharma", mcq: 25, thy: 20, ia: 7 },
-      { roll: "1003", name: "Dipika Saikia", mcq: 12, thy: 10, ia: 5 },
-      { roll: "1004", name: "Rahul Bora", mcq: 0, thy: 25, ia: 8 }
-    ];
-
-    let students;
-    try {
-      const saved = localStorage.getItem("halfYearlyResults");
-      students = saved ? JSON.parse(saved) : initialData;
-      if (!Array.isArray(students) || students.length === 0) {
-        students = initialData;
-      }
-    } catch (e) {
-      students = initialData;
-    }
-
-    function saveData() {
-      localStorage.setItem("halfYearlyResults", JSON.stringify(students));
-    }
-
-    function evaluateStudent(s) {
-      const mcqPass = s.mcq > 0;
-      const thyPass = s.thy > 0;
-      const iaPass = s.ia > 0;
-      const total = s.mcq + s.thy + s.ia;
-      const aggregatePass = total >= 30;
-      const overallPass = mcqPass && thyPass && iaPass && aggregatePass;
-
-      return { ...s, total, mcqPass, thyPass, iaPass, aggregatePass, overallPass };
-    }
-
-    // Navigation & Auth Switcher
-    function switchTab(tab) {
-      const studentView = document.getElementById("studentView");
-      const adminView = document.getElementById("adminView");
-      const navStudentBtn = document.getElementById("navStudentBtn");
-      const navAdminBtn = document.getElementById("navAdminBtn");
-
-      if (tab === "student") {
-        studentView.classList.remove("hidden");
-        adminView.classList.add("hidden");
-        navStudentBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-slate-950 shadow hover:bg-amber-400 transition";
-        navAdminBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition";
-      } else {
-        studentView.classList.add("hidden");
-        adminView.classList.remove("hidden");
-        navAdminBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-amber-500 text-slate-950 shadow hover:bg-amber-400 transition";
-        navStudentBtn.className = "px-4 py-2 text-sm font-semibold rounded-lg bg-slate-800 text-slate-300 hover:bg-slate-700 hover:text-white transition";
-        
-        checkAdminAuth();
-      }
-    }
-
-    function checkAdminAuth() {
-      const isLogged = sessionStorage.getItem("adminLoggedIn") === "true";
-      const loginCard = document.getElementById("adminLoginCard");
-      const dashboard = document.getElementById("adminDashboard");
-
-      if (isLogged) {
-        loginCard.classList.add("hidden");
-        dashboard.classList.remove("hidden");
-        renderAdminTable();
-      } else {
-        loginCard.classList.remove("hidden");
-        dashboard.classList.add("hidden");
-      }
-    }
-
-    function handleAdminLogin(e) {
-      e.preventDefault();
-      const user = document.getElementById("adminUser").value.trim();
-      const pass = document.getElementById("adminPass").value.trim();
-      const errorMsg = document.getElementById("loginError");
-
-      if (user === "admin" && pass === "dara123@") {
-        sessionStorage.setItem("adminLoggedIn", "true");
-        errorMsg.classList.add("hidden");
-        document.getElementById("adminUser").value = "";
-        document.getElementById("adminPass").value = "";
-        checkAdminAuth();
-      } else {
-        errorMsg.classList.remove("hidden");
-      }
-    }
-
-    function adminLogout() {
-      sessionStorage.removeItem("adminLoggedIn");
-      checkAdminAuth();
-    }
-
-    function handleSearch(e) {
-      e.preventDefault();
-      const rollInput = document.getElementById("searchRoll").value.trim();
-      const rawStudent = students.find(s => s.roll.toLowerCase() === rollInput.toLowerCase());
-      const resultCard = document.getElementById("resultCard");
-
-      if (!rawStudent) {
-        alert("No candidate record found for Roll No: " + rollInput);
-        resultCard.classList.add("hidden");
-        return;
-      }
-
-      const res = evaluateStudent(rawStudent);
-
-      document.getElementById("resName").innerText = res.name;
-      document.getElementById("resRoll").innerText = "Roll No: " + res.roll;
-      document.getElementById("resMCQ").innerText = res.mcq;
-      document.getElementById("resTHY").innerText = res.thy;
-      document.getElementById("resIA").innerText = res.ia;
-      document.getElementById("resTotal").innerText = res.total;
-
-      document.getElementById("resMCQStatus").innerHTML = res.mcqPass ? '<span class="text-emerald-600">PASSED</span>' : '<span class="text-red-500">FAILED</span>';
-      document.getElementById("resTHYStatus").innerHTML = res.thyPass ? '<span class="text-emerald-600">PASSED</span>' : '<span class="text-red-500">FAILED</span>';
-      document.getElementById("resIAStatus").innerHTML = res.iaPass ? '<span class="text-emerald-600">PASSED</span>' : '<span class="text-red-500">FAILED</span>';
-
-      const badge = document.getElementById("resStatusBadge");
-      const overallStatusCell = document.getElementById("resOverallStatus");
-
-      if (res.overallPass) {
-        badge.className = "px-3 py-1 text-xs font-extrabold uppercase rounded-full bg-emerald-500 text-white shadow-sm";
-        badge.innerText = "PASS";
-        overallStatusCell.innerHTML = '<span class="text-emerald-600 font-bold">QUALIFIED</span>';
-      } else {
-        badge.className = "px-3 py-1 text-xs font-extrabold uppercase rounded-full bg-red-500 text-white shadow-sm";
-        badge.innerText = "FAIL";
-        overallStatusCell.innerHTML = '<span class="text-red-500 font-bold">NEEDS IMPROVEMENT</span>';
-      }
-
-      resultCard.classList.remove("hidden");
-    }
-
-    function renderAdminTable(dataToRender = students) {
-      const tbody = document.getElementById("adminTableBody");
-      tbody.innerHTML = "";
-
-      dataToRender.forEach(raw => {
-        const res = evaluateStudent(raw);
-        const tr = document.createElement("tr");
-        tr.className = "hover:bg-slate-50 transition";
-        tr.innerHTML = `
-          <td class="py-3 px-4 font-mono font-semibold">${res.roll}</td>
-          <td class="py-3 px-4 font-medium">${res.name}</td>
-          <td class="py-3 px-4 text-center">${res.mcq}</td>
-          <td class="py-3 px-4 text-center">${res.thy}</td>
-          <td class="py-3 px-4 text-center">${res.ia}</td>
-          <td class="py-3 px-4 text-center font-bold text-indigo-700">${res.total}</td>
-          <td class="py-3 px-4 text-center">
-            <span class="px-2.5 py-0.5 text-xs font-semibold rounded-full ${res.overallPass ? 'bg-emerald-100 text-emerald-700' : 'bg-red-100 text-red-700'}">
-              ${res.overallPass ? 'PASS' : 'FAIL'}
-            </span>
-          </td>
-          <td class="py-3 px-4 text-right space-x-2">
-            <button onclick="editStudent('${res.roll}')" class="text-xs text-blue-600 hover:underline"><i class="fa-solid fa-pen-to-square"></i> Edit</button>
-            <button onclick="deleteStudent('${res.roll}')" class="text-xs text-red-600 hover:underline"><i class="fa-solid fa-trash"></i> Delete</button>
-          </td>
-        `;
-        tbody.appendChild(tr);
-      });
-    }
-
-    function filterAdminTable() {
-      const q = document.getElementById("adminSearch").value.toLowerCase();
-      const filtered = students.filter(s => s.name.toLowerCase().includes(q) || s.roll.toLowerCase().includes(q));
-      renderAdminTable(filtered);
-    }
-
-    let editingRoll = null;
-    function openModal(roll = null) {
-      editingRoll = roll;
-      const modal = document.getElementById("entryModal");
-      const title = document.getElementById("modalTitle");
-
-      if (roll) {
-        title.innerText = "Edit Student Result";
-        const target = students.find(s => s.roll === roll);
-        document.getElementById("modalRoll").value = target.roll;
-        document.getElementById("modalRoll").disabled = true;
-        document.getElementById("modalName").value = target.name;
-        document.getElementById("modalMCQ").value = target.mcq;
-        document.getElementById("modalTHY").value = target.thy;
-        document.getElementById("modalIA").value = target.ia;
-      } else {
-        title.innerText = "Add Student Result";
-        document.getElementById("modalRoll").disabled = false;
-        document.getElementById("modalRoll").value = "";
-        document.getElementById("modalName").value = "";
-        document.getElementById("modalMCQ").value = 0;
-        document.getElementById("modalTHY").value = 0;
-        document.getElementById("modalIA").value = 0;
-      }
-      modal.classList.remove("hidden");
-      modal.classList.add("flex");
-    }
-
-    function closeModal() {
-      const modal = document.getElementById("entryModal");
-      modal.classList.add("hidden");
-      modal.classList.remove("flex");
-    }
-
-    function saveStudent(e) {
-      e.preventDefault();
-      const roll = document.getElementById("modalRoll").value.trim();
-      const name = document.getElementById("modalName").value.trim();
-      const mcq = parseInt(document.getElementById("modalMCQ").value) || 0;
-      const thy = parseInt(document.getElementById("modalTHY").value) || 0;
-      const ia = parseInt(document.getElementById("modalIA").value) || 0;
-
-      const existingIdx = students.findIndex(s => s.roll.toLowerCase() === roll.toLowerCase());
-
-      if (editingRoll) {
-        const idx = students.findIndex(s => s.roll === editingRoll);
-        if (idx !== -1) students[idx] = { roll, name, mcq, thy, ia };
-      } else if (existingIdx !== -1) {
-        students[existingIdx] = { roll, name, mcq, thy, ia };
-      } else {
-        students.push({ roll, name, mcq, thy, ia });
-      }
-
-      saveData();
-      renderAdminTable();
-      closeModal();
-    }
-
-    function editStudent(roll) {
-      openModal(roll);
-    }
-
-    function deleteStudent(roll) {
-      if (confirm(`Are you sure you want to delete result for Roll ${roll}?`)) {
-        students = students.filter(s => s.roll !== roll);
-        saveData();
-        renderAdminTable();
-      }
-    }
-
-    function handleBulkCSV(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-
-      const reader = new FileReader();
-      reader.onload = function(evt) {
-        const text = evt.target.result;
-        const lines = text.split("\n");
-        let count = 0;
-
-        lines.forEach((line, index) => {
-          if (index === 0 && line.toLowerCase().includes("roll")) return;
-          const parts = line.split(",").map(p => p.trim());
-          if (parts.length >= 5) {
-            const [roll, name, mcq, thy, ia] = parts;
-            if (roll && name) {
-              const existingIdx = students.findIndex(s => s.roll === roll);
-              const rec = { roll, name, mcq: parseInt(mcq)||0, thy: parseInt(thy)||0, ia: parseInt(ia)||0 };
-              if (existingIdx !== -1) students[existingIdx] = rec;
-              else students.push(rec);
-              count++;
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Northeast Career Info - Educational Portal</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                            900: '#14532d',
+                        }
+                    }
+                }
             }
-          }
-        });
+        }
+    </script>
+    <!-- FontAwesome & Lucide Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        .dark .glassmorphism {
+            background: rgba(15, 23, 42, 0.7);
+            backdrop-filter: blur(10px);
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.05);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: rgba(156, 163, 175, 0.5);
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: rgba(107, 114, 128, 0.8);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 dark:bg-slate-900 text-slate-800 dark:text-slate-100 min-h-screen transition-colors duration-200 flex flex-col font-sans">
 
-        saveData();
-        renderAdminTable();
-        alert(`Successfully imported/updated ${count} records.`);
-      };
-      reader.readAsText(file);
-    }
+    <!-- Toast Notification Container -->
+    <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
 
-    function resetData() {
-      if (confirm("Reset dataset back to original sample records?")) {
-        students = [...initialData];
-        saveData();
-        renderAdminTable();
-      }
-    }
-  </script>
+    <!-- Header Navigation -->
+    <header class="sticky top-0 z-40 bg-white/90 dark:bg-slate-800/90 backdrop-blur border-b border-slate-200 dark:border-slate-700 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+            <!-- Brand Logo -->
+            <div class="flex items-center gap-3">
+                <div class="bg-gradient-to-tr from-brand-600 to-emerald-400 p-2.5 rounded-xl text-white shadow-md shadow-brand-500/20">
+                    <i class="fa-solid fa-graduation-cap text-xl"></i>
+                </div>
+                <div>
+                    <h1 class="font-bold text-lg leading-tight tracking-tight text-slate-900 dark:text-white">Northeast Career Info</h1>
+                    <p class="text-xs text-brand-600 dark:text-brand-400 font-medium">Educational Resources & Live Tests</p>
+                </div>
+            </div>
+
+            <!-- Portal Navigation Tabs & Controls -->
+            <div class="flex items-center gap-2 sm:gap-4">
+                <!-- Navigation Tabs -->
+                <nav class="flex bg-slate-100 dark:bg-slate-700/50 p-1 rounded-xl">
+                    <button id="nav-student-btn" onclick="switchPortal('student')" class="px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400">
+                        <i class="fa-solid fa-user-graduate mr-1.5"></i>Student
+                    </button>
+                    <button id="nav-admin-btn" onclick="switchPortal('admin')" class="px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-all">
+                        <i class="fa-solid fa-user-shield mr-1.5"></i>Admin
+                    </button>
+                </nav>
+
+                <!-- Audio Toggle Button -->
+                <button id="sound-btn" onclick="toggleAudio()" title="Toggle Sound FX" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    <i id="sound-icon" class="fa-solid fa-volume-high text-sm"></i>
+                </button>
+
+                <!-- Theme Toggle Button -->
+                <button id="theme-btn" onclick="toggleDarkMode()" title="Toggle Theme" class="p-2 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 transition">
+                    <i id="theme-icon" class="fa-solid fa-moon text-sm"></i>
+                </button>
+
+                <!-- Logout Button (Hidden by default) -->
+                <button id="admin-logout-btn" onclick="logoutAdmin()" class="hidden px-3 py-1.5 rounded-lg text-sm font-medium bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900/50 transition border border-red-200 dark:border-red-800">
+                    <i class="fa-solid fa-right-from-bracket mr-1.5"></i>Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ================= STUDENT PORTAL ================= -->
+        <div id="student-portal" class="space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative overflow-hidden rounded-2xl bg-gradient-to-r from-slate-900 via-slate-800 to-brand-900 text-white p-6 sm:p-8 shadow-xl">
+                <div class="relative z-10 max-w-2xl space-y-3">
+                    <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-brand-500/20 text-brand-300 border border-brand-500/30">
+                        <i class="fa-solid fa-sparkles text-xs"></i> Class 1 to 10 Portal (SEBA & NA)
+                    </span>
+                    <h2 class="text-2xl sm:text-3xl font-extrabold tracking-tight">Access Question Papers & Live Competitive Quizzes</h2>
+                    <p class="text-slate-300 text-sm sm:text-base">Prepare effectively for school board exams with free PDF question downloads and timed live practice sessions.</p>
+                </div>
+                <i class="fa-solid fa-book-open text-9xl absolute -right-6 -bottom-8 opacity-10 text-white pointer-events-none"></i>
+            </div>
+
+            <!-- Filters Header & Search -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-5 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <!-- Search Input -->
+                    <div class="relative flex-1">
+                        <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                        <input type="text" id="student-search" oninput="renderStudentPortal()" placeholder="Search PDFs or Live Quizzes by title..." 
+                            class="w-full pl-10 pr-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700/50 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-brand-500 text-sm">
+                    </div>
+
+                    <!-- Sub-Category Filter Buttons (SEBA / NA) -->
+                    <div class="flex items-center gap-2">
+                        <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider">Sub-Board:</span>
+                        <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-medium">
+                            <button onclick="setSubCategoryFilter('ALL')" id="subcat-filter-ALL" class="px-3 py-1.5 rounded-lg transition bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 font-bold shadow-sm">All</button>
+                            <button onclick="setSubCategoryFilter('SEBA')" id="subcat-filter-SEBA" class="px-3 py-1.5 rounded-lg transition text-slate-600 dark:text-slate-300 hover:text-slate-900">SEBA</button>
+                            <button onclick="setSubCategoryFilter('NA')" id="subcat-filter-NA" class="px-3 py-1.5 rounded-lg transition text-slate-600 dark:text-slate-300 hover:text-slate-900">NA</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Class Categories Scrollable Bar (Class 1 to Class 10) -->
+                <div>
+                    <span class="text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 block">Select Class:</span>
+                    <div class="flex items-center gap-2 overflow-x-auto pb-2 scrollbar-none" id="class-category-chips">
+                        <!-- Class Chips populated by JS -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Portal Sub-Tabs: PDFs vs Quizzes -->
+            <div class="flex border-b border-slate-200 dark:border-slate-700 gap-8 text-sm font-semibold">
+                <button id="tab-pdf-btn" onclick="switchStudentTab('pdfs')" class="py-3 border-b-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center gap-2">
+                    <i class="fa-solid fa-file-pdf"></i> Question Papers & PDFs <span id="pdf-count-badge" class="bg-brand-100 text-brand-700 dark:bg-brand-900/40 dark:text-brand-300 text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+                <button id="tab-quiz-btn" onclick="switchStudentTab('quizzes')" class="py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 dark:hover:text-slate-200 flex items-center gap-2">
+                    <i class="fa-solid fa-bolt"></i> Live Quizzes & Tests <span id="quiz-count-badge" class="bg-slate-100 text-slate-700 dark:bg-slate-700 dark:text-slate-300 text-xs px-2 py-0.5 rounded-full">0</span>
+                </button>
+            </div>
+
+            <!-- PDF Material Section -->
+            <div id="section-pdfs" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- PDF Items Populated Dynamically -->
+            </div>
+
+            <!-- Quiz List Section -->
+            <div id="section-quizzes" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Quiz Items Populated Dynamically -->
+            </div>
+        </div>
+
+
+        <!-- ================= LIVE QUIZ ARENA (Full Screen Session) ================= -->
+        <div id="quiz-arena" class="hidden space-y-6">
+            <!-- Quiz Active Header -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-4 sm:p-6 shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                    <span id="arena-quiz-class" class="px-2.5 py-0.5 rounded text-xs font-bold bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300">Class --</span>
+                    <h2 id="arena-quiz-title" class="text-xl font-bold text-slate-900 dark:text-white mt-1">Quiz Title</h2>
+                </div>
+
+                <div class="flex items-center gap-4 bg-slate-50 dark:bg-slate-700/50 px-4 py-2 rounded-xl border border-slate-200 dark:border-slate-600">
+                    <div class="flex items-center gap-2 text-slate-600 dark:text-slate-300 font-semibold text-sm">
+                        <i class="fa-regular fa-clock text-brand-500"></i>
+                        <span>Time Left:</span>
+                        <span id="quiz-timer" class="font-mono text-lg font-bold text-amber-600 dark:text-amber-400">10:00</span>
+                    </div>
+                    <button onclick="exitQuizSession()" class="text-xs text-red-500 hover:text-red-700 dark:hover:text-red-400 font-semibold underline">
+                        Exit Quiz
+                    </button>
+                </div>
+            </div>
+
+            <!-- Progress Bar -->
+            <div class="w-full bg-slate-200 dark:bg-slate-700 h-2 rounded-full overflow-hidden">
+                <div id="quiz-progress" class="bg-brand-500 h-full w-0 transition-all duration-300"></div>
+            </div>
+
+            <!-- Question Card Area -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+                <div class="flex items-center justify-between border-b border-slate-100 dark:border-slate-700/60 pb-4">
+                    <span id="question-indicator" class="text-sm font-semibold text-slate-500">Question 1 of 5</span>
+                    <button id="bookmark-btn" onclick="toggleBookmarkCurrentQuestion()" class="text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50 dark:hover:bg-slate-700 transition">
+                        <i class="fa-regular fa-bookmark mr-1.5"></i>Flag Question
+                    </button>
+                </div>
+
+                <h3 id="question-text" class="text-lg font-bold text-slate-900 dark:text-white leading-snug">
+                    Question text will appear here...
+                </h3>
+
+                <!-- Options List -->
+                <div id="options-container" class="space-y-3">
+                    <!-- Option items generated dynamically -->
+                </div>
+
+                <!-- Navigation Controls -->
+                <div class="flex items-center justify-between pt-4 border-t border-slate-100 dark:border-slate-700/60">
+                    <button id="prev-q-btn" onclick="navigateQuizQuestion(-1)" class="px-4 py-2 rounded-xl text-sm font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 disabled:opacity-40 disabled:cursor-not-allowed">
+                        <i class="fa-solid fa-arrow-left mr-1.5"></i>Previous
+                    </button>
+                    <button id="next-q-btn" onclick="navigateQuizQuestion(1)" class="px-5 py-2 rounded-xl text-sm font-semibold bg-brand-600 hover:bg-brand-700 text-white shadow-md shadow-brand-500/20">
+                        Next <i class="fa-solid fa-arrow-right ml-1.5"></i>
+                    </button>
+                    <button id="submit-quiz-btn" onclick="submitQuizAnswers()" class="hidden px-5 py-2 rounded-xl text-sm font-semibold bg-emerald-600 hover:bg-emerald-700 text-white shadow-md shadow-emerald-500/20">
+                        Submit Quiz <i class="fa-solid fa-check ml-1.5"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= QUIZ RESULT REPORT ================= -->
+        <div id="quiz-results" class="hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 dark:border-slate-700 text-center space-y-4">
+                <div class="w-20 h-20 bg-brand-100 dark:bg-brand-950/60 rounded-full flex items-center justify-center mx-auto text-brand-600 dark:text-brand-400 text-3xl shadow-inner">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-white">Quiz Completed!</h2>
+                <p id="result-subtitle" class="text-slate-500 dark:text-slate-400 text-sm">Here is your performance overview</p>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-2xl mx-auto pt-4">
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Score</span>
+                        <span id="res-score" class="text-2xl font-extrabold text-brand-600 dark:text-brand-400">0 / 0</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Accuracy</span>
+                        <span id="res-accuracy" class="text-2xl font-extrabold text-slate-800 dark:text-white">0%</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Correct</span>
+                        <span id="res-correct" class="text-2xl font-extrabold text-emerald-600">0</span>
+                    </div>
+                    <div class="bg-slate-50 dark:bg-slate-700/50 p-4 rounded-xl border border-slate-200 dark:border-slate-600">
+                        <span class="block text-xs font-semibold text-slate-500 uppercase">Incorrect</span>
+                        <span id="res-incorrect" class="text-2xl font-extrabold text-rose-600">0</span>
+                    </div>
+                </div>
+
+                <div class="pt-4 flex justify-center gap-4">
+                    <button onclick="backToStudentPortal()" class="px-5 py-2.5 rounded-xl font-semibold bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 dark:hover:bg-slate-600 text-sm">
+                        Back to Student Dashboard
+                    </button>
+                    <button onclick="retakeCurrentQuiz()" class="px-5 py-2.5 rounded-xl font-semibold bg-brand-600 hover:bg-brand-700 text-white text-sm shadow-md">
+                        Retake Quiz <i class="fa-solid fa-rotate-right ml-1"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Detailed Answer Breakdown -->
+            <div class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 space-y-4">
+                <h3 class="font-bold text-slate-900 dark:text-white text-lg">Solutions & Explanations Key</h3>
+                <div id="solution-breakdown-container" class="space-y-4 divide-y divide-slate-100 dark:divide-slate-700">
+                    <!-- Detailed solutions rendered by JS -->
+                </div>
+            </div>
+        </div>
+
+
+        <!-- ================= ADMIN PORTAL ================= -->
+        <div id="admin-portal" class="hidden space-y-6">
+            <!-- Header Status -->
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white dark:bg-slate-800 p-5 rounded-2xl border border-slate-200 dark:border-slate-700 shadow-sm">
+                <div>
+                    <span class="inline-flex items-center gap-1.5 text-xs font-bold px-2.5 py-0.5 rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-950 dark:text-emerald-300">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span> Authenticated Admin
+                    </span>
+                    <h2 class="text-xl font-extrabold text-slate-900 dark:text-white mt-1">Management Console</h2>
+                </div>
+                <!-- Admin Action Tabs -->
+                <div class="flex bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs font-semibold">
+                    <button id="admin-tab-pdf-btn" onclick="switchAdminTab('pdf')" class="px-4 py-2 rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm">
+                        <i class="fa-solid fa-file-arrow-up mr-1.5"></i>Upload PDF Material
+                    </button>
+                    <button id="admin-tab-quiz-btn" onclick="switchAdminTab('quiz')" class="px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900">
+                        <i class="fa-solid fa-square-plus mr-1.5"></i>Create Live Quiz
+             </button>
+                </div>
+            </div>
+
+            <!-- Form 1: Upload PDF Question Paper -->
+            <div id="admin-pdf-section" class="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">Upload New Study Material / Question PDF</h3>
+
+                <form onsubmit="handlePdfUploadSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Material Title *</label>
+                            <input type="text" id="pdf-title" required placeholder="e.g. Class 10 Mathematics Annual Exam 2025" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Class Category *</label>
+                                <select id="pdf-class" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                    <option value="Class 1">Class 1</option>
+                                    <option value="Class 2">Class 2</option>
+                                    <option value="Class 3">Class 3</option>
+                                    <option value="Class 4">Class 4</option>
+                                    <option value="Class 5">Class 5</option>
+                                    <option value="Class 6">Class 6</option>
+                                    <option value="Class 7">Class 7</option>
+                                    <option value="Class 8">Class 8</option>
+                                    <option value="Class 9">Class 9</option>
+                                    <option value="Class 10" selected>Class 10</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Sub Category *</label>
+                                <select id="pdf-subcat" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                    <option value="SEBA">SEBA</option>
+                                    <option value="NA">NA</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Subject Name *</label>
+                            <input type="text" id="pdf-subject" required placeholder="e.g. General Science / Social Studies" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Select File (PDF) *</label>
+                            <input type="file" id="pdf-file-input" accept=".pdf" class="w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 dark:file:bg-slate-700 dark:file:text-slate-200">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Document Description</label>
+                        <textarea id="pdf-desc" rows="2" placeholder="Brief summary of syllabus covered or instructions..." 
+                            class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none"></textarea>
+                    </div>
+
+                    <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-brand-500/20 transition">
+                        <i class="fa-solid fa-cloud-arrow-up mr-2"></i>Publish PDF Document
+                    </button>
+                </form>
+            </div>
+
+            <!-- Form 2: Create Live Quiz Arena -->
+            <div id="admin-quiz-section" class="hidden bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-sm border border-slate-200 dark:border-slate-700 space-y-6">
+                <h3 class="text-lg font-bold text-slate-900 dark:text-white border-b border-slate-100 dark:border-slate-700 pb-3">Create & Publish Live Quiz</h3>
+
+                <form onsubmit="handleQuizCreateSubmit(event)" class="space-y-6">
+                    <!-- Quiz Details -->
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="md:col-span-2">
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Quiz Title *</label>
+                            <input type="text" id="builder-quiz-title" required placeholder="e.g. Class 9 General Science Mock Test 1" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Time Limit (Minutes) *</label>
+                            <input type="number" id="builder-quiz-time" required min="1" max="180" value="10" 
+                                class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Class Category *</label>
+                            <select id="builder-quiz-class" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                <option value="Class 1">Class 1</option>
+                                <option value="Class 2">Class 2</option>
+                                <option value="Class 3">Class 3</option>
+                                <option value="Class 4">Class 4</option>
+                                <option value="Class 5">Class 5</option>
+                                <option value="Class 6">Class 6</option>
+                                <option value="Class 7">Class 7</option>
+                                <option value="Class 8">Class 8</option>
+                                <option value="Class 9">Class 9</option>
+                                <option value="Class 10" selected>Class 10</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Sub Category *</label>
+                            <select id="builder-quiz-subcat" required class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                                <option value="SEBA">SEBA</option>
+                                <option value="NA">NA</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Questions Builder Container -->
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between border-b border-slate-200 dark:border-slate-700 pb-2">
+                            <h4 class="font-bold text-slate-800 dark:text-slate-200 text-sm">Quiz Questions</h4>
+                            <button type="button" onclick="addQuestionToBuilder()" class="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+                                <i class="fa-solid fa-plus mr-1"></i>Add Question
+                            </button>
+                        </div>
+
+                        <div id="quiz-builder-questions-list" class="space-y-6">
+                            <!-- Question Builder Cards rendered dynamically -->
+                        </div>
+                    </div>
+
+                    <button type="submit" class="px-6 py-2.5 bg-brand-600 hover:bg-brand-700 text-white font-semibold text-sm rounded-xl shadow-md shadow-brand-500/20 transition">
+                        <i class="fa-solid fa-rocket mr-2"></i>Publish Live Quiz Session
+                    </button>
+                </form>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="mt-auto border-t border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800 py-6 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>&copy; 2026 Northeast Career Info. Empowering students across Class 1 to 10 (SEBA & NA).</p>
+        </div>
+    </footer>
+
+    <!-- ================= MODALS ================= -->
+
+    <!-- PDF Viewer Preview Modal -->
+    <div id="pdf-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden border border-slate-200 dark:border-slate-700">
+            <div class="p-4 border-b border-slate-200 dark:border-slate-700 flex items-center justify-between">
+                <div>
+                    <h3 id="modal-pdf-title" class="font-bold text-slate-900 dark:text-white text-base">PDF Preview</h3>
+                    <p id="modal-pdf-meta" class="text-xs text-slate-500">Class 10 | SEBA</p>
+                </div>
+                <button onclick="closePdfModal()" class="p-1 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            
+            <!-- Simulated Document Body -->
+            <div class="p-6 overflow-y-auto flex-1 bg-slate-100 dark:bg-slate-900/50 space-y-4 text-sm leading-relaxed" id="modal-pdf-content">
+                <!-- Preview text generated -->
+            </div>
+
+            <div class="p-4 border-t border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/80 flex items-center justify-between">
+                <span class="text-xs text-slate-500">Official Downloadable Resource</span>
+                <button id="modal-download-btn" class="px-4 py-2 bg-brand-600 hover:bg-brand-700 text-white rounded-xl text-xs font-semibold shadow-sm flex items-center gap-2">
+                    <i class="fa-solid fa-download"></i> Download PDF Document
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Authentication Modal -->
+    <div id="admin-auth-modal" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-md w-full p-6 shadow-2xl border border-slate-200 dark:border-slate-700 space-y-5">
+            <div class="text-center space-y-2">
+                <div class="w-12 h-12 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto text-brand-600 dark:text-brand-400">
+                    <i class="fa-solid fa-lock text-xl"></i>
+                </div>
+                <h3 class="text-xl font-bold text-slate-900 dark:text-white">Admin Authentication</h3>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Please enter administrator credentials to access management tools.</p>
+            </div>
+
+            <form onsubmit="handleAdminLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">User ID</label>
+                    <input type="text" id="admin-userid-input" required placeholder="Enter User ID" 
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-semibold text-slate-600 dark:text-slate-300 uppercase mb-1">Password</label>
+                    <input type="password" id="admin-password-input" required placeholder="••••••••" 
+                        class="w-full px-3.5 py-2.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                </div>
+
+                <div class="flex justify-end gap-3 pt-2">
+                    <button type="button" onclick="cancelAdminAuth()" class="px-4 py-2 rounded-xl text-xs font-semibold bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200">
+                        Cancel
+                    </button>
+                    <button type="submit" class="px-5 py-2 rounded-xl text-xs font-semibold bg-brand-600 hover:bg-brand-700 text-white shadow-md">
+                        Authenticate <i class="fa-solid fa-arrow-right ml-1"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+      <!-- ================= JAVASCRIPT APPLICATION LOGIC ================= -->
+    <script>
+        // Security: Stored SHA-256 Digest Hashes
+        const ADMIN_USER_HASH = "8c6976e5b5410415bde908bd4dee15dfb167a9c873fc4bb8a81f6f2ab448a918"; 
+        const ADMIN_PASS_HASH = "ca29dfddafaa5d2784570fd0e7686b245086ee8670bf3c5b5aa811a21626f839"; 
+
+        // Sound Synthesis Settings
+        let soundEnabled = true;
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playSound(type) {
+            if (!soundEnabled) return;
+            try {
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (type === 'click') {
+                    osc.frequency.setValueAtTime(400, now);
+                    gain.gain.setValueAtTime(0.05, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+                    osc.start(now);
+                    osc.stop(now + 0.05);
+                } else if (type === 'correct') {
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.08); // E5
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                } else if (type === 'incorrect') {
+                    osc.frequency.setValueAtTime(220, now);
+                    osc.frequency.setValueAtTime(180, now + 0.08);
+                    gain.gain.setValueAtTime(0.08, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+                    osc.start(now);
+                    osc.stop(now + 0.2);
+                }
+            } catch(e) {}
+        }
+
+        function toggleAudio() {
+            soundEnabled = !soundEnabled;
+            const icon = document.getElementById('sound-icon');
+            if (soundEnabled) {
+                icon.className = 'fa-solid fa-volume-high text-sm';
+                showToast('Sound Enabled', 'info');
+            } else {
+                icon.className = 'fa-solid fa-volume-xmark text-sm';
+                showToast('Sound Muted', 'info');
+            }
+        }
+
+        // Crypto Hash Helper
+        async function sha256(message) {
+            const msgBuffer = new TextEncoder().encode(message);
+            const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+            const hashArray = Array.from(new Uint8Array(hashBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
+
+        // Application State & Storage Initializers
+        let currentPortal = 'student';
+        let currentStudentTab = 'pdfs';
+        let selectedClassFilter = 'ALL';
+        let selectedSubCatFilter = 'ALL';
+        let isAdminAuthenticated = sessionStorage.getItem('ne_admin_session') === 'true';
+
+        // Mock Initial Data (Class 1 to 10 + SEBA/NA)
+        const initialPdfs = [
+            {
+                id: 'pdf-1',
+                title: 'Class 10 General Science SEBA Model Question Paper 2025',
+                classCat: 'Class 10',
+                subCat: 'SEBA',
+                subject: 'General Science',
+                date: '2026-02-15',
+                downloads: 412,
+                description: 'Complete model paper covering Physics, Chemistry, and Biology modules according to SEBA 2025 syllabus.'
+            },
+            {
+                id: 'pdf-2',
+                title: 'Class 9 Mathematics Unit Test Sample Paper',
+                classCat: 'Class 9',
+                subCat: 'NA',
+                subject: 'Mathematics',
+                date: '2026-01-20',
+                downloads: 289,
+                description: 'Includes Algebra, Geometry, and Trigonometry foundational questions with solution hints.'
+            },
+            {
+                id: 'pdf-3',
+                title: 'Class 8 Social Science Geography & History Notes',
+                classCat: 'Class 8',
+                subCat: 'SEBA',
+                subject: 'Social Science',
+                date: '2026-03-01',
+                downloads: 175,
+                description: 'Key concepts of Indian History and Physical Geography for Class 8 term exams.'
+            },
+            {
+                id: 'pdf-4',
+                title: 'Class 5 English Grammar Practice Worksheet',
+                classCat: 'Class 5',
+                subCat: 'NA',
+                subject: 'English',
+                date: '2026-02-28',
+                downloads: 98,
+                description: 'Elementary grammar exercises on Tenses, Prepositions, and Vocabulary building.'
+            }
+        ];
+
+        const initialQuizzes = [
+            {
+                id: 'quiz-1',
+                title: 'Class 10 Science Objective Mock Test',
+                classCat: 'Class 10',
+                subCat: 'SEBA',
+                timeLimit: 5,
+                questions: [
+                    {
+                        question: 'Which element is liquid at room temperature?',
+                        options: ['Mercury', 'Sodium', 'Magnesium', 'Iron'],
+                        correctIndex: 0,
+                        explanation: 'Mercury (Hg) is the only metallic element that remains liquid at standard room temperature.'
+                    },
+                    {
+                        question: 'What is the functional unit of the human kidney?',
+                        options: ['Neuron', 'Nephron', 'Alveoli', 'Liver Cell'],
+                        correctIndex: 1,
+                        explanation: 'Nephrons are the microscopic structural and functional units of the kidneys.'
+                    },
+                    {
+                        question: 'Light entering the eye is controlled by which part?',
+                        options: ['Cornea', 'Iris', 'Retina', 'Pupil'],
+                        correctIndex: 1,
+                        explanation: 'The Iris controls the size of the pupil and thus the amount of light entering the eye.'
+                    }
+                ]
+            },
+            {
+                id: 'quiz-2',
+                title: 'Class 8 Mathematics Basics Speed Quiz',
+                classCat: 'Class 8',
+                subCat: 'NA',
+                timeLimit: 3,
+                questions: [
+                    {
+                        question: 'What is the square root of 625?',
+                        options: ['15', '25', '35', '45'],
+                        correctIndex: 1,
+                        explanation: '25 multiplied by 25 equals 625.'
+                    },
+                    {
+                        question: 'Sum of all angles of a quadrilateral is:',
+                        options: ['180°', '270°', '360°', '540°'],
+                        correctIndex: 2,
+                        explanation: 'The interior angles of any simple four-sided polygon sum to 360 degrees.'
+                    }
+                ]
+            }
+        ];
+
+        // Fetch from LocalStorage or initialize
+        let pdfList = JSON.parse(localStorage.getItem('ne_pdfs')) || initialPdfs;
+        let quizList = JSON.parse(localStorage.getItem('ne_quizzes')) || initialQuizzes;
+
+        function saveStorage() {
+            localStorage.setItem('ne_pdfs', JSON.stringify(pdfList));
+            localStorage.setItem('ne_quizzes', JSON.stringify(quizList));
+        }
+
+        // Navigation & Tab Switching
+        function switchPortal(portal) {
+            playSound('click');
+            if (portal === 'admin' && !isAdminAuthenticated) {
+                document.getElementById('admin-auth-modal').classList.remove('hidden');
+                return;
+            }
+
+            currentPortal = portal;
+            const studentPortal = document.getElementById('student-portal');
+            const adminPortal = document.getElementById('admin-portal');
+            const quizArena = document.getElementById('quiz-arena');
+            const quizResults = document.getElementById('quiz-results');
+
+            const studentBtn = document.getElementById('nav-student-btn');
+            const adminBtn = document.getElementById('nav-admin-btn');
+            const logoutBtn = document.getElementById('admin-logout-btn');
+
+            if (portal === 'student') {
+                studentPortal.classList.remove('hidden');
+                adminPortal.classList.add('hidden');
+                quizArena.classList.add('hidden');
+                quizResults.classList.add('hidden');
+
+                studentBtn.className = "px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400";
+                adminBtn.className = "px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition-all";
+                renderStudentPortal();
+            } else {
+                studentPortal.classList.add('hidden');
+                adminPortal.classList.remove('hidden');
+                quizArena.classList.add('hidden');
+                quizResults.classList.add('hidden');
+
+                adminBtn.className = "px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold transition-all shadow-sm bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400";
+                studentBtn.className = "px-3 sm:px-4 py-1.5 rounded-lg text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-slate-900 transition-all";
+                
+                if (isAdminAuthenticated) {
+                    logoutBtn.classList.remove('hidden');
+                }
+                renderAdminQuestionsBuilder();
+            }
+        }
+
+        function switchStudentTab(tab) {
+            playSound('click');
+            currentStudentTab = tab;
+            const pdfSection = document.getElementById('section-pdfs');
+            const quizSection = document.getElementById('section-quizzes');
+            const pdfBtn = document.getElementById('tab-pdf-btn');
+            const quizBtn = document.getElementById('tab-quiz-btn');
+
+            if (tab === 'pdfs') {
+                pdfSection.classList.remove('hidden');
+                quizSection.classList.add('hidden');
+                pdfBtn.className = "py-3 border-b-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center gap-2 font-semibold";
+                quizBtn.className = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 font-semibold";
+            } else {
+                pdfSection.classList.add('hidden');
+                quizSection.classList.remove('hidden');
+                quizBtn.className = "py-3 border-b-2 border-brand-500 text-brand-600 dark:text-brand-400 flex items-center gap-2 font-semibold";
+                pdfBtn.className = "py-3 border-b-2 border-transparent text-slate-500 hover:text-slate-800 flex items-center gap-2 font-semibold";
+            }
+            renderStudentPortal();
+        }
+
+        // Render Class Category Chips
+        function renderClassChips() {
+            const container = document.getElementById('class-category-chips');
+            const classes = ['ALL', 'Class 1', 'Class 2', 'Class 3', 'Class 4', 'Class 5', 'Class 6', 'Class 7', 'Class 8', 'Class 9', 'Class 10'];
+            
+            container.innerHTML = classes.map(c => {
+                const isActive = selectedClassFilter === c;
+                const activeClass = isActive 
+                    ? 'bg-brand-600 text-white font-bold shadow-sm' 
+                    : 'bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200';
+                return `<button onclick="setClassFilter('${c}')" class="px-3.5 py-1.5 rounded-xl text-xs whitespace-nowrap transition ${activeClass}">${c}</button>`;
+            }).join('');
+        }
+
+        function setClassFilter(classCat) {
+            playSound('click');
+            selectedClassFilter = classCat;
+            renderClassChips();
+            renderStudentPortal();
+        }
+
+        function setSubCategoryFilter(subCat) {
+            playSound('click');
+            selectedSubCatFilter = subCat;
+            ['ALL', 'SEBA', 'NA'].forEach(sc => {
+                const btn = document.getElementById(`subcat-filter-${sc}`);
+                if (sc === subCat) {
+                    btn.className = "px-3 py-1.5 rounded-lg transition bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 font-bold shadow-sm";
+                } else {
+                    btn.className = "px-3 py-1.5 rounded-lg transition text-slate-600 dark:text-slate-300 hover:text-slate-900";
+                }
+            });
+            renderStudentPortal();
+        }
+
+        // Render Student Data
+        function renderStudentPortal() {
+            const searchQuery = (document.getElementById('student-search').value || '').toLowerCase();
+
+            // Filter PDFs
+            const filteredPdfs = pdfList.filter(item => {
+                const matchClass = selectedClassFilter === 'ALL' || item.classCat === selectedClassFilter;
+                const matchSub = selectedSubCatFilter === 'ALL' || item.subCat === selectedSubCatFilter;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery) || item.subject.toLowerCase().includes(searchQuery);
+                return matchClass && matchSub && matchSearch;
+            });
+
+            // Filter Quizzes
+            const filteredQuizzes = quizList.filter(item => {
+                const matchClass = selectedClassFilter === 'ALL' || item.classCat === selectedClassFilter;
+                const matchSub = selectedSubCatFilter === 'ALL' || item.subCat === selectedSubCatFilter;
+                const matchSearch = item.title.toLowerCase().includes(searchQuery);
+                return matchClass && matchSub && matchSearch;
+            });
+
+            document.getElementById('pdf-count-badge').innerText = filteredPdfs.length;
+            document.getElementById('quiz-count-badge').innerText = filteredQuizzes.length;
+
+            // Render PDF Grid
+            const pdfContainer = document.getElementById('section-pdfs');
+            if (filteredPdfs.length === 0) {
+                pdfContainer.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400"><i class="fa-solid fa-folder-open text-4xl mb-2"></i><p class="text-sm">No Question PDFs found matching filters.</p></div>`;
+            } else {
+                pdfContainer.innerHTML = filteredPdfs.map(pdf => `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="px-2.5 py-0.5 rounded-full font-bold bg-brand-100 text-brand-700 dark:bg-brand-950 dark:text-brand-300">${pdf.classCat}</span>
+                                <span class="px-2.5 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">${pdf.subCat}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base leading-snug">${pdf.title}</h4>
+                            <p class="text-xs text-slate-500 line-clamp-2">${pdf.description}</p>
+                        </div>
+                        <div class="pt-3 border-t border-slate-100 dark:border-slate-700/60 flex items-center justify-between text-xs">
+                            <span class="text-slate-400"><i class="fa-solid fa-download mr-1"></i>${pdf.downloads} Downloads</span>
+                            <div class="flex gap-2">
+                                <button onclick="openPdfModal('${pdf.id}')" class="px-3 py-1.5 rounded-lg bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-200 hover:bg-slate-200 font-semibold">
+                                    Preview
+                                </button>
+                                <button onclick="downloadPdfFile('${pdf.id}')" class="px-3 py-1.5 rounded-lg bg-brand-600 text-white font-semibold hover:bg-brand-700">
+                                    Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            // Render Quiz Grid
+            const quizContainer = document.getElementById('section-quizzes');
+            if (filteredQuizzes.length === 0) {
+                quizContainer.innerHTML = `<div class="col-span-full py-12 text-center text-slate-400"><i class="fa-solid fa-stopwatch text-4xl mb-2"></i><p class="text-sm">No Live Quizzes currently available for selected filters.</p></div>`;
+            } else {
+                quizContainer.innerHTML = filteredQuizzes.map(quiz => `
+                    <div class="bg-white dark:bg-slate-800 rounded-2xl p-5 shadow-sm border border-slate-200 dark:border-slate-700 hover:shadow-md transition flex flex-col justify-between space-y-4">
+                        <div class="space-y-2">
+                            <div class="flex items-center justify-between text-xs">
+                                <span class="px-2.5 py-0.5 rounded-full font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300">${quiz.classCat}</span>
+                                <span class="px-2.5 py-0.5 rounded-full font-semibold bg-slate-100 text-slate-600 dark:bg-slate-700 dark:text-slate-300">${quiz.subCat}</span>
+                            </div>
+                            <h4 class="font-bold text-slate-900 dark:text-white text-base leading-snug">${quiz.title}</h4>
+                            <div class="flex items-center gap-4 text-xs text-slate-500 pt-1">
+                                <span><i class="fa-regular fa-clock mr-1 text-brand-500"></i>${quiz.timeLimit} Mins</span>
+                                <span><i class="fa-regular fa-circle-question mr-1 text-brand-500"></i>${quiz.questions.length} Questions</span>
+                            </div>
+                        </div>
+                        <button onclick="startQuizSession('${quiz.id}')" class="w-full py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 text-white text-xs font-bold transition shadow-md shadow-brand-500/20">
+                            Start Live Quiz Session <i class="fa-solid fa-play ml-1"></i>
+                        </button>
+                    </div>
+                `).join('');
+            }
+        }
+
+        // Modal PDF Handler
+        let activePdfItem = null;
+        function openPdfModal(pdfId) {
+            playSound('click');
+            activePdfItem = pdfList.find(p => p.id === pdfId);
+            if (!activePdfItem) return;
+
+            document.getElementById('modal-pdf-title').innerText = activePdfItem.title;
+            document.getElementById('modal-pdf-meta').innerText = `${activePdfItem.classCat} | Sub-Board: ${activePdfItem.subCat} | Subject: ${activePdfItem.subject}`;
+            
+            document.getElementById('modal-pdf-content').innerHTML = `
+                <div class="p-6 bg-white dark:bg-slate-800 rounded-xl shadow-inner border border-slate-200 dark:border-slate-700 space-y-4">
+                    <div class="border-b border-slate-100 dark:border-slate-700 pb-3">
+                        <h4 class="font-bold text-base text-slate-800 dark:text-white">${activePdfItem.title}</h4>
+                        <p class="text-xs text-slate-500">Uploaded: ${activePdfItem.date}</p>
+                    </div>
+                    <p class="text-sm text-slate-600 dark:text-slate-300 leading-relaxed">${activePdfItem.description}</p>
+                    <div class="bg-amber-50 dark:bg-amber-950/40 p-4 rounded-xl border border-amber-200 dark:border-amber-900/50 text-xs text-amber-800 dark:text-amber-300">
+                        <i class="fa-solid fa-circle-info mr-1.5"></i> Notice: This official sample paper document is verified for North East Class 1-10 curriculum standards.
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('modal-download-btn').onclick = () => downloadPdfFile(pdfId);
+            document.getElementById('pdf-modal').classList.remove('hidden');
+        }
+
+        function closePdfModal() {
+            playSound('click');
+            document.getElementById('pdf-modal').classList.add('hidden');
+        }
+
+        function downloadPdfFile(pdfId) {
+            playSound('click');
+            const pdf = pdfList.find(p => p.id === pdfId);
+            if (pdf) {
+                pdf.downloads += 1;
+                saveStorage();
+                renderStudentPortal();
+
+                // Create Blob Download
+                const content = `Northeast Career Info - Official Question Document\nTitle: ${pdf.title}\nCategory: ${pdf.classCat} (${pdf.subCat})\nSubject: ${pdf.subject}\nDescription: ${pdf.description}\n\nDownloaded via Northeast Career Info Portal.`;
+                const blob = new Blob([content], { type: 'text/plain' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${pdf.title.replace(/\s+/g, '_')}.txt`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+
+                showToast(`Downloading: ${pdf.title}`, 'success');
+            }
+        }
+
+        // Live Quiz Session Engine
+        let activeQuiz = null;
+        let activeQuestionIdx = 0;
+        let quizAnswers = [];
+        let bookmarkedQuestions = [];
+        let quizTimerInterval = null;
+        let timeRemainingSeconds = 0;
+
+        function startQuizSession(quizId) {
+            playSound('click');
+            activeQuiz = quizList.find(q => q.id === quizId);
+            if (!activeQuiz) return;
+
+            activeQuestionIdx = 0;
+            quizAnswers = new Array(activeQuiz.questions.length).fill(null);
+            bookmarkedQuestions = new Array(activeQuiz.questions.length).fill(false);
+            timeRemainingSeconds = activeQuiz.timeLimit * 60;
+
+            document.getElementById('student-portal').classList.add('hidden');
+            document.getElementById('quiz-arena').classList.remove('hidden');
+            document.getElementById('quiz-results').classList.add('hidden');
+
+            document.getElementById('arena-quiz-title').innerText = activeQuiz.title;
+            document.getElementById('arena-quiz-class').innerText = `${activeQuiz.classCat} (${activeQuiz.subCat})`;
+
+            startTimer();
+            renderQuizQuestion();
+        }
+
+        function startTimer() {
+            clearInterval(quizTimerInterval);
+            updateTimerDisplay();
+            quizTimerInterval = setInterval(() => {
+                timeRemainingSeconds--;
+                updateTimerDisplay();
+                if (timeRemainingSeconds <= 0) {
+                    clearInterval(quizTimerInterval);
+                    showToast('Time limit expired! Auto-submitting quiz.', 'info');
+                    submitQuizAnswers();
+                }
+            }, 1000);
+        }
+
+        function updateTimerDisplay() {
+            const mins = Math.floor(timeRemainingSeconds / 60);
+            const secs = timeRemainingSeconds % 60;
+            document.getElementById('quiz-timer').innerText = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+        }
+
+        function renderQuizQuestion() {
+            const q = activeQuiz.questions[activeQuestionIdx];
+            const totalQ = activeQuiz.questions.length;
+
+            // Update Indicator & Progress
+            document.getElementById('question-indicator').innerText = `Question ${activeQuestionIdx + 1} of ${totalQ}`;
+            const progressPercent = ((activeQuestionIdx + 1) / totalQ) * 100;
+            document.getElementById('quiz-progress').style.width = `${progressPercent}%`;
+
+            // Flag Bookmark Button
+            const bmBtn = document.getElementById('bookmark-btn');
+            if (bookmarkedQuestions[activeQuestionIdx]) {
+                bmBtn.className = "text-xs px-3 py-1.5 rounded-lg bg-amber-50 dark:bg-amber-950 text-amber-600 border border-amber-300 dark:border-amber-800 font-bold";
+            } else {
+                bmBtn.className = "text-xs px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-50";
+            }
+
+            document.getElementById('question-text').innerText = q.question;
+
+            // Render Options
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = q.options.map((opt, idx) => {
+                const isSelected = quizAnswers[activeQuestionIdx] === idx;
+                const borderClass = isSelected 
+                    ? 'border-brand-500 bg-brand-50 dark:bg-brand-950/40 text-brand-900 dark:text-brand-300 font-semibold shadow-sm' 
+                    : 'border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50';
+
+                return `
+                    <button onclick="selectQuizOption(${idx})" class="w-full text-left p-4 rounded-xl border ${borderClass} transition flex items-center justify-between">
+                        <div class="flex items-center gap-3">
+                            <span class="w-7 h-7 rounded-lg bg-slate-100 dark:bg-slate-700 flex items-center justify-center text-xs font-bold text-slate-600 dark:text-slate-300">${String.fromCharCode(65 + idx)}</span>
+                            <span class="text-sm text-slate-800 dark:text-slate-200">${opt}</span>
+                        </div>
+                        ${isSelected ? '<i class="fa-solid fa-circle-check text-brand-500"></i>' : ''}
+                    </button>
+                `;
+            }).join('');
+
+            // Controls Visibility
+            document.getElementById('prev-q-btn').disabled = activeQuestionIdx === 0;
+            if (activeQuestionIdx === totalQ - 1) {
+                document.getElementById('next-q-btn').classList.add('hidden');
+                document.getElementById('submit-quiz-btn').classList.remove('hidden');
+            } else {
+                document.getElementById('next-q-btn').classList.remove('hidden');
+                document.getElementById('submit-quiz-btn').classList.add('hidden');
+            }
+        }
+
+        function selectQuizOption(optIdx) {
+            playSound('click');
+            quizAnswers[activeQuestionIdx] = optIdx;
+            renderQuizQuestion();
+        }
+
+        function toggleBookmarkCurrentQuestion() {
+            playSound('click');
+            bookmarkedQuestions[activeQuestionIdx] = !bookmarkedQuestions[activeQuestionIdx];
+            renderQuizQuestion();
+        }
+
+        function navigateQuizQuestion(step) {
+            playSound('click');
+            activeQuestionIdx += step;
+            renderQuizQuestion();
+        }
+
+        function exitQuizSession() {
+            if (confirm("Are you sure you want to exit? Your quiz progress will be lost.")) {
+                clearInterval(quizTimerInterval);
+                backToStudentPortal();
+            }
+        }
+
+        function submitQuizAnswers() {
+            clearInterval(quizTimerInterval);
+            playSound('correct');
+
+            let score = 0;
+            activeQuiz.questions.forEach((q, idx) => {
+                if (quizAnswers[idx] === q.correctIndex) {
+                    score++;
+                }
+            });
+
+            const total = activeQuiz.questions.length;
+            const accuracy = Math.round((score / total) * 100);
+
+            document.getElementById('quiz-arena').classList.add('hidden');
+            document.getElementById('quiz-results').classList.remove('hidden');
+
+            document.getElementById('res-score').innerText = `${score} / ${total}`;
+            document.getElementById('res-accuracy').innerText = `${accuracy}%`;
+         function backToStudentPortal() {
+            playSound('click');
+            document.getElementById('quiz-results').classList.add('hidden');
+            document.getElementById('quiz-arena').classList.add('hidden');
+            document.getElementById('student-portal').classList.remove('hidden');
+            renderStudentPortal();
+        }
+
+        function retakeCurrentQuiz() {
+            if (activeQuiz) {
+                startQuizSession(activeQuiz.id);
+            }
+        }
+
+
+        // ================= ADMIN PORTAL LOGIC =================
+        
+        // Admin Login Digest Authenticator
+        async function handleAdminLogin(e) {
+            e.preventDefault();
+            const userInput = document.getElementById('admin-userid-input').value.trim();
+            const passInput = document.getElementById('admin-password-input').value;
+
+            const userHash = await sha256(userInput);
+            const passHash = await sha256(passInput);
+
+            if (userHash === ADMIN_USER_HASH && passHash === ADMIN_PASS_HASH) {
+                isAdminAuthenticated = true;
+                sessionStorage.setItem('ne_admin_session', 'true');
+                document.getElementById('admin-auth-modal').classList.add('hidden');
+                document.getElementById('admin-userid-input').value = '';
+                document.getElementById('admin-password-input').value = '';
+                showToast('Successfully Authenticated as Admin', 'success');
+                switchPortal('admin');
+            } else {
+                playSound('incorrect');
+                showToast('Invalid Administrator Credentials', 'error');
+            }
+        }
+
+        function cancelAdminAuth() {
+            playSound('click');
+            document.getElementById('admin-auth-modal').classList.add('hidden');
+        }
+
+        function logoutAdmin() {
+            playSound('click');
+            isAdminAuthenticated = false;
+            sessionStorage.removeItem('ne_admin_session');
+            document.getElementById('admin-logout-btn').classList.add('hidden');
+            showToast('Logged out from Admin Panel', 'info');
+            switchPortal('student');
+        }
+
+        function switchAdminTab(tab) {
+            playSound('click');
+            const pdfSection = document.getElementById('admin-pdf-section');
+            const quizSection = document.getElementById('admin-quiz-section');
+            const pdfBtn = document.getElementById('admin-tab-pdf-btn');
+            const quizBtn = document.getElementById('admin-tab-quiz-btn');
+
+            if (tab === 'pdf') {
+                pdfSection.classList.remove('hidden');
+                quizSection.classList.add('hidden');
+                pdfBtn.className = "px-4 py-2 rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm";
+                quizBtn.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900";
+            } else {
+                pdfSection.classList.add('hidden');
+                quizSection.classList.remove('hidden');
+                quizBtn.className = "px-4 py-2 rounded-lg bg-white dark:bg-slate-800 text-brand-600 dark:text-brand-400 shadow-sm";
+                pdfBtn.className = "px-4 py-2 rounded-lg text-slate-600 dark:text-slate-300 hover:text-slate-900";
+            }
+        }
+
+        // Admin Submit: Upload PDF
+        function handlePdfUploadSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('pdf-title').value;
+            const classCat = document.getElementById('pdf-class').value;
+            const subCat = document.getElementById('pdf-subcat').value;
+            const subject = document.getElementById('pdf-subject').value;
+            const desc = document.getElementById('pdf-desc').value;
+
+            const newPdf = {
+                id: `pdf-${Date.now()}`,
+                title: title,
+                classCat: classCat,
+                subCat: subCat,
+                subject: subject,
+                date: new Date().toISOString().split('T')[0],
+                downloads: 0,
+                description: desc || 'Official curriculum question paper uploaded by administrator.'
+            };
+
+            pdfList.unshift(newPdf);
+            saveStorage();
+            showToast('PDF Document Uploaded & Published Successfully!', 'success');
+            e.target.reset();
+        }
+
+        // Dynamic Admin Quiz Questions Builder
+        let builderQuestions = [
+            { question: '', options: ['', '', '', ''], correctIndex: 0, explanation: '' }
+        ];
+
+        function renderAdminQuestionsBuilder() {
+            const container = document.getElementById('quiz-builder-questions-list');
+            container.innerHTML = builderQuestions.map((q, qIdx) => `
+                <div class="p-4 bg-slate-50 dark:bg-slate-700/50 rounded-xl border border-slate-200 dark:border-slate-600 space-y-4">
+                    <div class="flex items-center justify-between">
+                        <span class="text-xs font-bold text-slate-500 uppercase">Question #${qIdx + 1}</span>
+                        ${builderQuestions.length > 1 ? `<button type="button" onclick="removeQuestionFromBuilder(${qIdx})" class="text-xs text-rose-500 hover:underline"><i class="fa-solid fa-trash mr-1"></i>Remove</button>` : ''}
+                    </div>
+
+                    <div>
+                        <input type="text" required value="${q.question}" oninput="builderQuestions[${qIdx}].question = this.value" placeholder="Enter question prompt..." 
+                            class="w-full px-3.5 py-2 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+
+                    <!-- Options Grid -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        ${[0, 1, 2, 3].map(optIdx => `
+                            <div class="flex items-center gap-2">
+                                <input type="radio" name="builder-correct-${qIdx}" ${q.correctIndex === optIdx ? 'checked' : ''} onchange="builderQuestions[${qIdx}].correctIndex = ${optIdx}" title="Mark as correct answer">
+                                <input type="text" required value="${q.options[optIdx] || ''}" oninput="builderQuestions[${qIdx}].options[${optIdx}] = this.value" placeholder="Option ${String.fromCharCode(65 + optIdx)}" 
+                                    class="flex-1 px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                            </div>
+                        `).join('')}
+                    </div>
+
+                    <div>
+                        <input type="text" value="${q.explanation || ''}" oninput="builderQuestions[${qIdx}].explanation = this.value" placeholder="Solution explanation note for students..." 
+                            class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-600 bg-white dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:ring-2 focus:ring-brand-500 focus:outline-none">
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function addQuestionToBuilder() {
+            playSound('click');
+            builderQuestions.push({ question: '', options: ['', '', '', ''], correctIndex: 0, explanation: '' });
+            renderAdminQuestionsBuilder();
+        }
+
+        function removeQuestionFromBuilder(idx) {
+            playSound('click');
+            if (builderQuestions.length > 1) {
+                builderQuestions.splice(idx, 1);
+                renderAdminQuestionsBuilder();
+            }
+        }
+
+        function handleQuizCreateSubmit(e) {
+            e.preventDefault();
+            const title = document.getElementById('builder-quiz-title').value;
+            const timeLimit = parseInt(document.getElementById('builder-quiz-time').value);
+            const classCat = document.getElementById('builder-quiz-class').value;
+            const subCat = document.getElementById('builder-quiz-subcat').value;
+
+            const newQuiz = {
+                id: `quiz-${Date.now()}`,
+                title: title,
+                classCat: classCat,
+                subCat: subCat,
+                timeLimit: timeLimit,
+                questions: JSON.parse(JSON.stringify(builderQuestions))
+            };
+
+            quizList.unshift(newQuiz);
+            saveStorage();
+            showToast('Live Quiz Created & Published Successfully!', 'success');
+
+            // Reset Form
+            e.target.reset();
+            builderQuestions = [{ question: '', options: ['', '', '', ''], correctIndex: 0, explanation: '' }];
+            renderAdminQuestionsBuilder();
+        }
+
+
+        // Global Toast Notification Helper
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-slate-900 text-white';
+            if (type === 'success') bgClass = 'bg-emerald-600 text-white';
+            if (type === 'error') bgClass = 'bg-rose-600 text-white';
+
+            toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-lg text-xs font-semibold pointer-events-auto transition-all duration-300 transform translate-y-2 opacity-0 flex items-center gap-2`;
+            toast.innerHTML = `<i class="fa-solid fa-circle-info"></i> ${message}`;
+
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-2', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3500);
+        }
+
+        // Dark Mode Controller
+        function toggleDarkMode() {
+            playSound('click');
+            document.documentElement.classList.toggle('dark');
+            const isDark = document.documentElement.classList.contains('dark');
+            localStorage.setItem('ne_theme', isDark ? 'dark' : 'light');
+            document.getElementById('theme-icon').className = isDark ? 'fa-solid fa-sun text-sm' : 'fa-solid fa-moon text-sm';
+        }
+
+        // Initialize Theme & View
+        (function initApp() {
+            const savedTheme = localStorage.getItem('ne_theme');
+            if (savedTheme === 'dark' || (!savedTheme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+                document.getElementById('theme-icon').className = 'fa-solid fa-sun text-sm';
+            }
+            renderClassChips();
+            renderStudentPortal();
+        })();
+    </script>
 </body>
 </html>
